@@ -1,5 +1,8 @@
 #include <xc.h>
+#include <stdint.h>
+
 #include "sched.h"
+#include "fifo.h"
 
 void blinky1();
 void blinky2();
@@ -19,22 +22,34 @@ task_t blinky2_task = {
 	.func = &blinky2
 };
 
+int sem = 1;
+
+fifo_t blinky_fifo = {
+	.sem = 1,
+};
+
 void blinky1()
 {
-	int i;
-
+	uint32_t v[5] = { 1,3,2,5,7 };
+	int i, j=0;
+	
 	while (1) {
-		for (i=0;i<2000000;i++);
-		LATHINV = 1;
+		while (!fifo_put(&blinky_fifo, &v[j]))
+			sched_yield();
+
+		j = (j+1)%5;
+		for (i=0;i<5000000;i++);
 	}
 }
 
 void blinky2()
 {
-	int i;
-
+	uint32_t *v;
+	
 	while (1) {
-		for (i=0;i<5000000;i++);
-		LATHINV = 2;
+		while (!fifo_get(&blinky_fifo, &v))
+			sched_yield();
+
+		LATH = *v;
 	}
 }

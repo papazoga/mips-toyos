@@ -3,6 +3,7 @@
 	.set noat
 	.set nomips16
 	.globl __vector_dispatch_9
+	.globl __vector_dispatch_1
 	.extern schedule
 	.extern current_task
 
@@ -105,7 +106,20 @@ scheduler_isr:
 	eret
 	nop
 
+/* Core Software Interrupt 0 */
+	.section .vector_1,code
+	.globl __vector_dispatch_1
+	.align 2
+	.ent __vector_dispatch_1
 
+__vector_dispatch_1:
+	j scheduler_isr
+	nop
+
+	.end __vector_dispatch_1
+	.size __vector_dispatch_1, .-__vector_dispatch_1
+
+/* Timer 2 Interrupt */	
 	.section .vector_9,code
 	.globl __vector_dispatch_9
 	.align 2
@@ -117,3 +131,5 @@ __vector_dispatch_9:
 
 	.end __vector_dispatch_9
 	.size __vector_dispatch_9, .-__vector_dispatch_9
+
+	
