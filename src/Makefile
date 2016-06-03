@@ -10,7 +10,7 @@ CFLAGS=-mprocessor=$(MCU) -Wall
 ASFLAGS=-mprocessor=$(MCU)
 IPECMD=$(IPE_DIR)/ipecmd.sh
 
-OBJS=main.o timer.o interrupt.o sched.o asm.o blinky.o fifo.o
+OBJS=main.o timer.o interrupt.o sched.o asm.o blinky.o fifo.o uart.o
 
 all: blinky.elf
 

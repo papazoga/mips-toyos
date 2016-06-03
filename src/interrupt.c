@@ -67,5 +67,5 @@ inline void int_disable(int vector)
 void int_init()
 {
 	ireg.control.set = MVEC;
-	ireg.shadow_priority.val = 0x00000000;
+	ireg.shadow_priority.val = 0x65432100;
 }
